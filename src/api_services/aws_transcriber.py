@@ -36,50 +36,33 @@ def get_transcribe(audio_file_uri, job_name='crtvtask',
             TranscriptionJobName=job_name,
             Media={'MediaFileUri': audio_file_uri},
             MediaFormat='mp3',
-            LanguageCode=language_code
-        )
+            LanguageCode=language_code,
+            MediaSampleRateHertz=16000)
 
         logger.info(f"Transcription job started for {audio_file_uri}.")
 
         while True:
-            job = transcribe_client.get_transcription_job(TranscriptionJobName=job_name)
+            job = transcribe_client.get_transcription_job(
+                TranscriptionJobName=job_name)
             job_status = job['TranscriptionJob']['TranscriptionJobStatus']
-            print(f"Transcription job is {job_status}.")
+            logger.info(f"Transcription job is {job_status}.")
 
             if job_status in ['COMPLETED', 'FAILED']:
-                print(f"Transcription job {job_status}.")
-                break
+                logger.info(f"Transcription job {job_status}.")
+                try:
+                    trans_uri = job['TranscriptionJob']['Transcript']['TranscriptFileUri']
+                    response = urllib.request.urlopen(trans_uri)
+                    data = json.loads(response.read())
+                    text = data['results']['transcripts'][0]['transcript']
+                    logger.info("========== below is output of speech-to-text ========================\n due to arabic language, it may not be shown in log file properly. \n=====================================================================")
+                    logger.info(text)
+                    logger.info("=====================================================================")
+                    return text
+                except Exception as e:
+                    logger.info(f"Error retrieving transcript: {e}")
+                    return "Error retrieving transcript, although it's completed."
+
             time.sleep(5)
-
-        # max_tries = 6
-        # while max_tries > 0:
-        #     max_tries -= 1
-
-        #     job_status = job['TranscriptionJob']['TranscriptionJobStatus']
-        #     logger.info(f"Job {job_name} is {job_status}.")
-
-        #     if job_status in ['COMPLETED', 'FAILED']:
-        #         if job_status == 'COMPLETED':
-        #             try:
-        #                 response = urllib.request.urlopen(job['TranscriptionJob']['Transcript']['TranscriptFileUri'])
-        #                 data = json.loads(response.read())
-        #                 text = data['results']['transcripts'][0]['transcript']
-        #                 logger.info("========== below is output of speech-to-text ========================")
-        #                 logger.info(text)
-        #                 logger.info(
-        #                     "=====================================================================")
-        #                 return text
-        #             except Exception as e:
-        #                 logger.info(f"Error retrieving transcript: {e}")
-        #                 return "Error retrieving transcript."
-        #         else:
-        #             logger.info(
-        #                 f"Transcription job failed. Check AWS Transcribe logs for details.")
-        #             return "Transcription job failed."
-        #     else:
-        #         logger.info(
-        #             f"Waiting for {job_name}. Current status is {job_status}.")
-        #         time.sleep(10)
 
     except Exception as e:
         logger.info(f"Error during transcription: {e}")

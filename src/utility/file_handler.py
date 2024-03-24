@@ -14,7 +14,8 @@ def convert_audio(input_file, output_file):
     try:
         logger.info(f"Converting audio file: {input_file} -> {output_file}")
 
-        command = "ffmpeg -i {} -acodec libmp3lame -ab 128k {}".format(input_file, output_file)
+        command = "ffmpeg -i {} -ar 16000 {}".format(input_file, output_file)
+        # command = "ffmpeg -i {} -acodec pcm_s16le -ac 1 -ar 16000 {}".format(input_file, output_file)
 
         subprocess.run(command, check=True)
 

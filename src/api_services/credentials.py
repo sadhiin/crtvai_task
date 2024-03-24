@@ -10,3 +10,4 @@ AWS_REGION = "ap-southeast-1"
 
 OPNEAI_API_KEY= os.environ.get("OPNEAI_API_KEY")
 
+

@@ -22,7 +22,7 @@ def get_summary(transcript):
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a highly skilled AI trained in language comprehension and summarization. I would like you to read the following text and summarize it into a concise abstract paragraph. Aim to retain the most important points, providing a coherent and readable summary that could help a person understand the main points of the discussion without needing to read the entire text. Please avoid unnecessary details or tangential points."
+                    "content": "أنا ذكاء اصطناعي ماهر للغاية مدرب على فهم اللغة والتلخيص. أريد منك قراءة النص التالي وتلخيصه في فقرة مجردة موجزة. هدفنا هو الحفاظ على أهم النقاط ، مع توفير ملخص متماسك وقابل للقراءة يمكن أن يساعد الشخص على فهم النقاط الرئيسية للمناقشة دون الحاجة إلى قراءة النص بأكمله. يرجى تجنب التفاصيل غير الضرورية أو النقاط التماسية."
                 },
                 {
                     "role": "user",
@@ -33,9 +33,10 @@ def get_summary(transcript):
             frequency_penalty=0,
             presence_penalty=0
         )
+
         summary = response.choices[0].message.content
         return summary
     except Exception as e:
         logger.error(
-            f"Error occured during geting summary from Openai. {e.__str__()}")
+            f"Error occured during geting summary from Openai. {e}")
         return "Error occured during geting summary from Openai."
