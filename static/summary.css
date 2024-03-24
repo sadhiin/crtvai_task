@@ -1,0 +1,21 @@
+body {
+    font-family: sans-serif;
+    margin: 30px;
+}
+.summary-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.summary-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+.transcript {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.summary {
+    font-weight: bold;
+}
