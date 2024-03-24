@@ -1,21 +1,25 @@
 import os
 from src.utility.local_loger import logger
-
 import subprocess
 
-
-def convert_audio(input_file, output_file, output_format):
+def convert_audio(input_file, output_file):
     """
     Converts an audio file from one format to another using FFmpeg.
 
     Args:
         input_file: Path to the input audio file (including extension).
         output_file: Path to the desired output file (including extension).
-        output_format: The desired output format (e.g., mp3, wav, flac, etc.).
-    """
-    command = ['ffmpeg', '-i', input_file, output_file]
-    subprocess.run(command, check=True)
 
+        """
+    try:
+        logger.info(f"Converting audio file: {input_file} -> {output_file}")
+
+        command = "ffmpeg -i {} -acodec libmp3lame -ab 128k {}".format(input_file, output_file)
+
+        subprocess.run(command, check=True)
+
+    except Exception as e:
+        logger.error(f"Error during conversion audio file.: {e}")
 
 
 def delete_file(file_path):
