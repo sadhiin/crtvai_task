@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Summarization</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .upload-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .upload-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .upload-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .upload-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .upload-button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"> -->
+</head>
+<body>
+    
+
+    <div class="upload-container">
+        <h2 class="upload-title">Upload Your Audio File</h2>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="audio_file" class="upload-input" accept="audio/wav">
+            <br>
+            <button type="submit" class="upload-button">Summarize Audio</button>
+        </form>
+    </div>
+
+    
+</body>
+</html>
