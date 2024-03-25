@@ -17,7 +17,7 @@ ALLOWED_EXTENSIONS = {'mp3', 'wav', 'flac', 'm4a', 'webm', 'ogg', 'amr', 'wma', 
 
 PORT = 5000
 HOST = '0.0.0.0'
-DEBUG = True
+DEBUG = False
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
