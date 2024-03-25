@@ -1,6 +1,7 @@
 import os
 import json
 import subprocess
+from threading import Thread
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, redirect, url_for
 from src.utility.local_loger import logger
@@ -68,8 +69,11 @@ def transcribe_and_summarize():
                 logger.error(f"Error during conversion audio file.: {e}")
 
             # saving file to the S3 bucket
-            upload_audio_file_to_s3(output_file_path, secure_filename(
-                output_file_path).split("/")[-1])
+            s3_uploder_thread = Thread(target=upload_audio_file_to_s3, args=(
+                output_file_path, secure_filename(output_file_path).split("/")[-1]))
+            s3_uploder_thread.daemon = True
+            s3_uploder_thread.start()
+
             logger.info(
                 f"File uploaded to S3 bucket successfully. {output_file_path.split('/')[-1]}")
 
@@ -78,6 +82,8 @@ def transcribe_and_summarize():
             logger.info(f"Last file uploaded: {last_file}")
 
             # Get the transcript of the audio file
+            logger.info("Getting transcript of the audio file.")
+
             transcript = get_transcribe(
                 audio_file_uri=last_file, language_code="ar-SA", media_format='mp3', job_name='crtvtask')
             logger.info("Transcript generated successfully.")

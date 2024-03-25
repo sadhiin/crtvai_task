@@ -40,7 +40,7 @@ def get_transcribe(audio_file_uri, job_name='crtvtask',
             MediaSampleRateHertz=16000)
 
         logger.info(f"Transcription job started for {audio_file_uri}.")
-
+        start_time = time.time()
         while True:
             job = transcribe_client.get_transcription_job(
                 TranscriptionJobName=job_name)
@@ -53,7 +53,7 @@ def get_transcribe(audio_file_uri, job_name='crtvtask',
                     trans_uri = job['TranscriptionJob']['Transcript']['TranscriptFileUri']
                     response = urllib.request.urlopen(trans_uri)
                     data = json.loads(response.read())
-                    text = data['results']['transcripts'][0]['transcript']
+                    text = str(data['results']['transcripts'][0]['transcript'])
                     logger.info("========== below is output of speech-to-text ========================\n due to arabic language, it may not be shown in log file properly. \n=====================================================================")
                     logger.info(text)
                     logger.info("=====================================================================")
@@ -61,7 +61,9 @@ def get_transcribe(audio_file_uri, job_name='crtvtask',
                 except Exception as e:
                     logger.info(f"Error retrieving transcript: {e}")
                     return "Error retrieving transcript, although it's completed."
-
+            if time.time() - start_time > 600:  # 10 minutes
+                logger.info("Transcription job timed out after 10 minutes.")
+                return "Transcription job timed out."
             time.sleep(5)
 
     except Exception as e:
