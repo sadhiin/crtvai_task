@@ -51,10 +51,3 @@ This Flask application allows users to upload audio files, transcribe them to te
 3. The application will transcribe the audio and summarize the transcript.
 4. The transcript and summary will be displayed on the screen.
 
-## Notes
-
-- This is a basic example and may require further configuration based on your specific use case.
-- Error handling and user feedback can be improved.
-- Consider security best practices for handling user uploads and AWS credentials.
-
-**Feel free to modify and extend this project to suit your needs!**

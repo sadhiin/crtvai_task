@@ -19,20 +19,20 @@ PORT = 5000
 HOST = '0.0.0.0'
 DEBUG = False
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+application = Flask(__name__)
+application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route("/")
+@application.route("/")
 def upload_file():
     return render_template('home.html')
 
 
-@app.route("/", methods=['POST'])
+@application.route("/", methods=['POST'])
 def transcribe_and_summarize():
 
     if request.method == 'POST':
@@ -105,5 +105,5 @@ def transcribe_and_summarize():
 
 if __name__ == "__main__":
     logger.info("Application running.")
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.run(host=HOST, port=PORT, debug=DEBUG)
+    os.makedirs(application.config['UPLOAD_FOLDER'], exist_ok=True)
+    application.run(host=HOST, port=PORT, debug=DEBUG)
